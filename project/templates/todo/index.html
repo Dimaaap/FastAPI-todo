@@ -1,0 +1,39 @@
+{% extends 'todo/layout.html' %}
+
+{% block content %}
+    <div style="margin-top: 50px;" class="ui container">
+        <h1 class="ui center aligned header blue">{{ app_name }}</h1>
+
+        <form class="ui form" action="{{ url_for('add_todo') }}" method="post">
+            <h3 class="test_css">Оптимізуй свій час</h3>
+            <div class="field">
+                <label>Нова задача</label>
+                <input type="text" name="title" placeholder="Введіть назву задачі"><br>
+            </div>
+            <button class="ui teal basic button" type="submit">Додати</button>
+        </form>
+
+        {% for todo in todo_list %}
+            <div class="ui segment">
+                <p class="ui big header">№{{ todo.id }} {{ todo.title }}</p>
+
+                {% if not todo.is_complete %}
+                    <span class="ui gray label">Не завершено</span>
+                    <a class="ui primary basic button" href="{{ url_for('get_update', todo_id=todo.id) }}">
+                        Закрити
+                    </a>
+                {% else %}
+                    <span class="ui green label">Завершено</span>
+                    <a class="ui blue button" href="{{ url_for('get_update', todo_id=todo.id) }}">
+                        Відкрити
+                    </a>
+                    <a class="ui negative basic button" href="{{ url_for('delete_todo', todo_id=todo.id) }}">
+                        Видалити
+                    </a>
+                {% endif %}
+            </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}
